@@ -73,5 +73,11 @@ session_start();
       echo "window.location='index.php';"; 
       echo "</script>";
  }
+ if(isset( $_COOKIE['login'])){
+
+     echo "<script type='text/javascript'>";
+     echo "document.getElementById('usuario').value = '".$_COOKIE['login']."';";
+     echo "</script>";        
+ }
  
 ?>

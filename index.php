@@ -5,15 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="imagenes/persona.jpg">
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="js/panel.js"></script>
     <title>Panel</title>
 </head>
 <body>
-</body>
-</html>
-
-
-
 <?php
 
 include_once "funciones.php";
@@ -23,4 +20,11 @@ session_start();
 mostrarBotones($_SESSION['rol'],$_SESSION['usuario']);
 
 ?>
+<div id="contenido" ></div>
+</body>
+</html>
+
+
+
+
 

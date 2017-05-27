@@ -1,24 +1,22 @@
 <?php
 Class Estacionamiento{
-
+include_once "AccesoDatos.php";
+private $_objVehiculo;
 private $_piso;
 private $_numCochera;
-private $_esMovil;
 private $_empleado;
-private $_turno;
 private $_importe;
-private $_hsEntrada;
-private $_hsSalida;
+private $_hsEntradaVehiculo;
+private $_hsSalidaVehiculo;
 
 public const $horaEstadia = 10;
 public const $mediaEstadia = 90;
 public const $estadiaCompleta = 170;
 
-public function __construct($piso=NULL,$numCochera=NULL,$esMovil=NULL,$empleado=NULL,$turno=NULL){
+public function __construct($piso=NULL,$numCochera=NULL,$empleado=NULL,$turno=NULL){
 
     $this->_piso=$piso;
     $this->_numCochera=$numCochera;
-    $this->_esMovil=$esMovil;
     $this->_empleado=$empleado;
     $this->_turno=$turno;
     $this->_hsEntrada = //completar
@@ -40,16 +38,47 @@ public function getEmpleado(){
 public function getTurno(){
     return $this->_turno;
 }
-public function getHsEntrada(){
-    return $this->_hsEntrada;
+public function getHsEntradaVehiculo(){
+    return $this->_hsEntradaVehiculo;
 }
-public function setHsSalida(){
-    $this->_hsSalida = time(); //verificar 
+public function setHsSalidaVehiculo(){
+    $this->_hsSalidaVehiculo = time(); //verificar 
 }
 public function setImporte($importe){
     $this->_importe = $importe;
 }
+public function setObjVehiculo($obj){
+    $this->_objVehiculo = $obj;
+}
 
+
+public static function verificarLugarDisponible ($piso,$cochera,$esDisc){
+    if($esDisc == "false")
+    {
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta = $objetoAccesoDato->RetornarConsulta(" SELECT numCochera FROM cocheras WHERE ocupada =  'no' AND esDisca = 'no'"); 
+        $consulta->execute();
+        $cantidad = $consulta->rowCount();
+        if($cantidad > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    else{
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta = $objetoAccesoDato->RetornarConsulta(" SELECT numCochera FROM cocheras WHERE ocupada =  'no'"); 
+        $consulta->execute();
+        $cantidad = $consulta->rowCount();
+        if($cantidad > 0){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+}
 
 }
 ?>

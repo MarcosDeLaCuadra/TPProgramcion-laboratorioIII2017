@@ -16,6 +16,8 @@ $cantidad = $consulta->rowCount();
 
  $row = $consulta->fetch();	    
  $rol =	$row['rol'];
+ $turno = $row['turno'];
+ $id= $row['id'];
 	
 
  if($cantidad == 1){
@@ -23,16 +25,18 @@ $cantidad = $consulta->rowCount();
      
         if($cookies == "true"){             
 
-            setcookie("login",$usuario,  time()+36000 , '/');         
-
+            setcookie("login",$usuario,  time()+360000 , '/');         
+            
         }
         else{
-            setcookie("login",$usuario,  time()-36000 , '/');
+            setcookie("login",$usuario,  time()-360000 , '/');
         }
       
     session_start();
     $_SESSION['usuario'] = $usuario;
     $_SESSION['rol']= $rol;
+    $_SESSION['turno'] = $turno;
+    $_SESSION['id']= $id;
     $error = 'true';
       
  }

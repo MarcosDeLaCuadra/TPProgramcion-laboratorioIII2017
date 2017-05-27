@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 24-05-2017 a las 23:05:41
+-- Tiempo de generación: 27-05-2017 a las 23:28:11
 -- Versión del servidor: 10.1.13-MariaDB
 -- Versión de PHP: 5.6.23
 
@@ -19,6 +19,27 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `dbestacionamieto`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `cocheras`
+--
+
+CREATE TABLE `cocheras` (
+  `numCochera` varchar(15) NOT NULL,
+  `esDisca` varchar(2) NOT NULL,
+  `ocupada` varchar(2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `cocheras`
+--
+
+INSERT INTO `cocheras` (`numCochera`, `esDisca`, `ocupada`) VALUES
+('2_2', 'no', 'si'),
+('3_3', 'no', 'no'),
+('2_3', 'no', 'no');
 
 -- --------------------------------------------------------
 
