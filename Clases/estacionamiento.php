@@ -1,37 +1,38 @@
 <?php
-Class Estacionamiento{
-include_once "AccesoDatos.php";
+
+
+include_once 'C:\xampp\htdocs\TPProgramcion-laboratorioIII2017\Clases\AccesoDatos.php';
+include_once 'C:\xampp\htdocs\TPProgramcion-laboratorioIII2017\Clases\vehiculo.php';
+
+Class Estacionamiento extends Vehiculo{
+
 private $_objVehiculo;
-private $_piso;
 private $_numCochera;
 private $_empleado;
 private $_importe;
 private $_hsEntradaVehiculo;
 private $_hsSalidaVehiculo;
 
-public const $horaEstadia = 10;
-public const $mediaEstadia = 90;
-public const $estadiaCompleta = 170;
+public  $horaEstadia = 10;
+public  $mediaEstadia = 90;
+public  $estadiaCompleta = 170;
 
-public function __construct($piso=NULL,$numCochera=NULL,$empleado=NULL,$turno=NULL){
-
-    $this->_piso=$piso;
+public function __construct($numCochera=NULL , $objVehiculo){
+    session_start();
+  
+    $this->_objVehiculo =  $objVehiculo ;//new Vehiculo($patente , $marca , $color ,$disca);   
     $this->_numCochera=$numCochera;
-    $this->_empleado=$empleado;
-    $this->_turno=$turno;
-    $this->_hsEntrada = //completar
+    $this->_empleado= $_SESSION['usuario'];
+    $this->_turno= $_SESSION['turno'];
+    $this->_hsEntradaVehiculo = time();
 
 }
 
-public function getPiso(){
-    return $this->_piso;
-}
+
 public function getNumCochera(){
     return $this->_numCochera;
 }
-public function getEsMovil(){
-    return $this->_esMovil;
-}
+
 public function getEmpleado(){
     return $this->_empleado;
 }
@@ -78,6 +79,19 @@ public static function verificarLugarDisponible ($piso,$cochera,$esDisc){
             return false;
         }
     }
+}
+
+public function IngresarVehiculo(){
+
+
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+		$consulta = $objetoAccesoDato->RetornarConsulta("INSERT into cocheras (numCochera,esDisca,ocupada,marca,patente,color,hsingreso,hssalida,empingreso,empsalida)values('$this->_numCochera','". $this->_objVehiculo->getDiscapacitado() ."','si','". $this->_objVehiculo->getMarca() ."','". $this->_objVehiculo->getPatente() ."','". $this->_objVehiculo->getColor() ."', $this->_hsEntradaVehiculo , 0 ,'$this->_empleado',' ')"); 
+		
+        //$consulta = $objetoAccesoDato->RetornarConsulta(INSERT into cocheras (esDisca)values('asd')");
+      //  echo $this->_objVehiculo->getMarca();
+		
+        $resultado = $consulta->execute();
+ 
 }
 
 }

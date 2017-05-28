@@ -1,19 +1,22 @@
 <?php
-include_once 'C:\xampp\htdocs\prog3\tpestacionamiento-master\Clases\AccesoDatos.php';
+include_once 'C:\xampp\htdocs\TPProgramcion-laboratorioIII2017\Clases\AccesoDatos.php';
+include_once 'C:\xampp\htdocs\TPProgramcion-laboratorioIII2017\Clases\estacionamiento.php';
+include_once 'C:\xampp\htdocs\TPProgramcion-laboratorioIII2017\Clases\vehiculo.php';
 $operacion = $_POST['operacion'];
 
 switch($operacion){
 
     case "alta":
-  /*
-  if(Estacionamiento::VerificarlugarDisponible($_POST['piso'],$_POST['cochera'],$_POST['discapacitado'])){ 
+  
+        
 
-        $objVehiculo = new Vehiculo ($_POST['patente'],$_POST['marca'],$_POST['color'],$_POST['discapacitado']);
+          $objVehiculo = new Vehiculo ($_POST['patente'],$_POST['marca'],$_POST['color'],$_POST['optradio']);
+            //$objEstacionamiento = new Estacionamiento($_POST['cochera'],$_POST['patente'],$_POST['marca'],$_POST['color'],$_POST['optradio']);
+        $objEstacionamiento = new Estacionamiento($_POST['cochera'], $objVehiculo);
 
-         $objVehiculo->IngresarVehiculo($objVehiculo);
+         $objEstacionamiento->IngresarVehiculo();
 
-  }
-  */
+  
     
     break;
 

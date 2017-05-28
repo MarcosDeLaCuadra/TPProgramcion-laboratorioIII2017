@@ -8,7 +8,7 @@ private $_discapacitado;
 
 public function __construct($patente=NULL,$marca=NULL,$color=NULL,$discapacitado=NULL){
 
-     $this->_pantente=$patente;
+     $this->_patente=$patente;
      $this->_marca=$marca;
      $this->_color=$color;
      $this->_discapacitado=$discapacitado;
@@ -19,14 +19,15 @@ public function getPatente(){
 }
 
 public function getMarca(){
-    return $this->_marcar;
+    return $this->_marca;
 }
 
 public function getColor(){
     return $this->_color;
 }
 public function getDiscapacitado(){
-    return $this->_discapacitado;
+   return $this->_discapacitado;
+ 
 }
 
 }
