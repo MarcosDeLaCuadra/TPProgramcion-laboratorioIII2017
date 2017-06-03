@@ -1,51 +1,47 @@
+
 <?php
-include_once 'C:\xampp\htdocs\TPProgramcion-laboratorioIII2017\Clases\AccesoDatos.php';
-include_once 'C:\xampp\htdocs\TPProgramcion-laboratorioIII2017\Clases\estacionamiento.php';
-include_once 'C:\xampp\htdocs\TPProgramcion-laboratorioIII2017\Clases\vehiculo.php';
+include_once '../Clases/AccesoDatos.php';
+include_once '../Clases/estacionamiento.php';
+include_once '../Clases/vehiculo.php';
+
 $operacion = $_POST['operacion'];
 
 switch($operacion){
 
     case "alta":
-  
-        
 
-          $objVehiculo = new Vehiculo ($_POST['patente'],$_POST['marca'],$_POST['color'],$_POST['optradio']);
-            //$objEstacionamiento = new Estacionamiento($_POST['cochera'],$_POST['patente'],$_POST['marca'],$_POST['color'],$_POST['optradio']);
-        $objEstacionamiento = new Estacionamiento($_POST['cochera'], $objVehiculo);
+    session_start();
 
-         $objEstacionamiento->IngresarVehiculo();
+    if(empty($_POST['patente']) || 
+       empty($_POST['marca']) ||
+       empty($_POST['color']) ||
+       $_POST['cochera'] == 0 )     
+     {
+       echo "<center><p class='bg-danger'><b>Faltan completar datos</b></p></center>";
+    }else{
+      $objVehiculo = new Vehiculo ($_POST['patente'],$_POST['marca'],$_POST['color'],$_POST['optradio']);
+      $objEstacionamiento = new Estacionamiento($_POST['cochera'], $objVehiculo);
+      $objEstacionamiento->IngresarVehiculo();
+    }
+     break;
 
-  
-    
-    break;
+     case "mostrar":
+     $patente = $_POST['patente'];
+     if(empty($patente)){
+        echo "<center><p class='bg-danger'><b>Faltan completar datos</b></p></center>";
+     }else{
+        Estacionamiento::buscarVehiculo($patente);
+     }
+     break;
 
-    case "baja":
+     case "borrar":
+      $patente = $_POST['patente'];
+      Estacionamiento::retirarVehiculo($patente);
+     break;
 
-    break;
-
-    case "ValidarCochera":
-
-   $miArray = array();  
-
-    $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
-    $consulta = $objetoAccesoDato->RetornarConsulta("SELECT numCochera FROM cocheras WHERE ocupada = 'si'"); 
-    $consulta->execute();
-
-    $cont= 0;
-    while ($row = $consulta->fetch()) 
-	 {
-
-         $miArray[$cont] = array("id"=> $row['numCochera']); 
-		//array_push($cocherasArray, $row['numCochera']);
-        $cont = $cont + 1;
-	 }
-
-$encodato=json_encode($miArray);
- echo $encodato;
-     
-    break;
-    
+     case "verCocherasOcupadas":
+     Estacionamiento::verCocherasOcupadas();
+     break;
 
 }
 

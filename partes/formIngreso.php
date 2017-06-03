@@ -37,7 +37,7 @@
        <center>
        <label for="optradio">Es discapacitado/embarazada: </label>
        <input type="radio" name="optradio" id="optradiosi" ><b>Si</b>
-       <input type="radio" name="optradio" id="optradiono" ><b>No</b>
+       <input type="radio" name="optradio" id="optradiono" checked ><b>No</b>
        </center>
        <br>
        
@@ -46,21 +46,22 @@
        <br>
        <label class="control-label col-sm-5" for="numCochera">Numero de cochera: </label>
        <div class="col-sm-4">
-             <select class="form-control" id="numCochera" name="lista" disabled="disabled">
+             <select class="form-control" id="numCochera"  name="lista">
+                <option hidden value="0" id="0">Seleccione una Cochera</option>
              <optgroup label="Piso numero 1" name = "piso1">
-                 <option value="1_1" id="cochera1_1"   >Cochera 1 - (Reservada)</option>
-                 <option value="1_2" id="cochera1_2">Cochera 2 </option>
-                 <option value="1_3" id="cochera1_3">Cochera 3 </option>
+                 <option value="1_1" id="1_1"   >Cochera 1 - (Reservada)</option>
+                 <option value="1_2" id="1_2">Cochera 2 </option>
+                 <option value="1_3" id="1_3">Cochera 3 </option>
                </optgroup>
                 <optgroup label="Piso numero 2" name = "piso2">
-                 <option value="2_1" id="cochera2_1" >Cochera 1 - (Reservada)</option>
-                 <option value="2_2" id="cochera2_2">Cochera 2 </option>
-                 <option value="2_3"id= "cochera2_3">Cochera 3 </option>
+                 <option value="2_1" id="2_1" >Cochera 1 - (Reservada)</option>
+                 <option value="2_2" id="2_2">Cochera 2 </option>
+                 <option value="2_3"id= "2_3">Cochera 3 </option>
                </optgroup>
                 <optgroup label="Piso numero 3"  name = "piso3">
-                 <option value="3_1" id="cochera3_1"  >Cochera 1 - (Reservada)</option>
-                 <option value="3_2" id="cochera3_2">Cochera 2 </option>
-                 <option value="3_3" id="cochera3_3">Cochera 3 </option>
+                 <option value="3_1" id="3_1"  >Cochera 1 - (Reservada)</option>
+                 <option value="3_2" id="3_2">Cochera 2 </option>
+                 <option value="3_3" id="3_3">Cochera 3 </option>
                </optgroup>
             </select>
        </div>
@@ -68,7 +69,7 @@
        </center>    
        <br>
        <center>
-         <button type="button" class="btn btn-success btn-sm" id="guardarbtn" > <!--button no submit hacerlo por jq-->
+         <button type="button" class="btn btn-success btn-sm" id="guardarbtn" > 
                  <span class="glyphicon glyphicon-floppy-disk"></span> Guardar 
          </button> 
          <button type="button" class="btn btn-info btn-sm" id="resetbtn">
@@ -85,9 +86,9 @@
     <br>
     <div id= "respuesta">
     </div>
+
 </body>
 </html>
-
 <?php
 sleep(2);
 ?>

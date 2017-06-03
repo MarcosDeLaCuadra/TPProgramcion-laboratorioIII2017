@@ -2,10 +2,12 @@ $(document).ready(function() {
 
     $('body').css('background', '#CEE3F6');
 
-       $("#ingresabtn").click(function() {
-            
-         $.ajax({
 
+//____________BOTONES MENU___________________
+
+       $("#ingresabtn").click(function() {
+     
+          $.ajax({ 
             url:'partes/formIngreso.php',  
             type:'POST',
             async: true,
@@ -13,28 +15,55 @@ $(document).ready(function() {
                         $("#contenido").html("<center><img src='imagenes/spinner.gif'></center>"); 
             },
             success: function (dataRespuesta){
-                $("#contenido").html(dataRespuesta);
+                $("#contenido").html(dataRespuesta);          
+             }
+
+        });        
+          
+    });
+
+    
+        $("#buscarbtn").click(function() {
+            
+         $.ajax({
+             url:'partes/formSalida.php',
+             type:'POST',
+             async: true,
+             beforeSend: function () {
+                     $("#contenido").html("<center><img src='imagenes/spinner.gif'></center>"); 
+             },
+             success: function (dataRespuesta){
+                      $("#contenido").html(dataRespuesta);
             }
+             
+           });
 
         });
 
-       });
 
-       
-        $("#resetbtn").click(function() {
+//____________END BOTONES MENU______________
+
+
+
+//_____________FORM INGRESO________________
+
+          $("#resetbtn").click(function() {
             
             
              $('#patente').val("");
              $('#marca').val("");
              $('#color').val("");           
              $("#optradiosi").prop("checked", "");
-             $("#optradiono").prop("checked", "");
-             $("#numPiso").val("1");
-             $("#numCochera").val("1");
-       });
+             $("#optradiono").prop("checked", true);
+            // $("#numPiso").val("1");
+             $('#numCochera > option[value="0"]').attr('selected', 'selected'); // revisar
+             $("#respuesta").empty();
+
+       }); 
 
        $("#guardarbtn").click(function() {
-
+            
+            
               var discapacitado;
 
               if($("#optradiosi").is(':checked')){
@@ -50,102 +79,96 @@ $(document).ready(function() {
                    data:{operacion:"alta",patente: $('#patente').val(), marca: $('#marca').val(),color: $('#color').val(),optradio: discapacitado,cochera:$('#numCochera').val()},
                    async: true,
                    beforeSend: function () {
-                             $("#respuesta").html("<center><img src='http://localhost/TP/imagenes/spinner.gif'></center>"); 
+                             $("#respuesta").html("<center><img src='imagenes/spinner.gif'></center>"); 
                     },
                   success: function (dataRespuesta){
-                      $("#respuesta").html(dataRespuesta);
+                    
+                     $("#respuesta").html(dataRespuesta);
+          
                   }
 
               });
+              
              
          });
 
-      $('#optradiosi').change(function() {
+            $("#ocupadasbtn").click(function() {
             
-        $('#numCochera').removeAttr('disabled');
-        $('#cochera1_1').removeAttr('disabled');
-        $('#cochera2_1').removeAttr('disabled');
-        $('#cochera3_1').removeAttr('disabled');
-        //----
-                        $('#cochera1_1').css('color','green');
-                        $('#cochera2_1').css('color','green');
-                       $('#cochera3_1').css('color','green');
-                      $('#cochera1_2').css('color','green');
-                       $('#cochera2_2').css('color','green');
-                        $('#cochera3_2').css('color','green');
-                        $('#cochera1_3').css('color','green');
-                        $('#cochera2_3').css('color','green');
-                        $('#cochera3_3').css('color','green');
-      
-         $.ajax({
-					url: 'partes/nexo.php',					
-					type: 'POST',
-					data: {operacion:"ValidarCochera"},                    
-					async: true,
-                    dataType: 'JSON',
-                   success: function (dataRespuesta){                   
-                    for(var i=0;i<dataRespuesta.length;i++){
-                         
-                          var id = dataRespuesta[i]["id"];
-                          $('#cochera'+id+'').attr('disabled', 'disabled');
-                         // $('#cochera'+id+'').css('background-color','#B0C4D0');
-                           $('#cochera'+id+'').css('color','red');
-                          
-                    }                
-                   }
+            $.ajax({
+
+                   url:'partes/nexo.php',
+                   type:'POST',
+                   data:{operacion:"verCocherasOcupadas"},
+                   async: true,
+                   beforeSend: function () {
+                             $("#respuesta").html("<center><img src='imagenes/spinner.gif'></center>"); 
+                    },
+                  success: function (dataRespuesta){
+                    
+                     $("#respuesta").html(dataRespuesta);
+          
+                  }
+
+            });
                      
+        });
+  
 
+//_________________END FORM INGRESO________________
+
+//_________________FORM SALIDA_____________________
+
+
+
+        $("#resetbtn2").click(function() {
+
+             $('#patente').val("");
+             $("#respuesta").empty();
+
+       }); 
+
+        $("#mostrarPatenteBtn").click(function() {
+            
+             $.ajax({
+             url:'partes/nexo.php',
+             type:'POST',
+             data:{operacion:"mostrar",patente: $('#patente').val()},
+             async: true,
+             beforeSend: function () {
+                     $("#respuesta").html("<center><img src='imagenes/spinner.gif'></center>"); 
+             },
+             success: function (dataRespuesta){
+               
+                  $("#respuesta").html(dataRespuesta);
+            }
              
-            
-
-       });
- });
-
-
-
-
-
-         $('#optradiono').change(function() {
-            
-            
-        $('#numCochera').removeAttr('disabled');
-        $('#cochera1_1').attr('disabled', 'disabled');
-        $('#cochera2_1').attr('disabled', 'disabled');
-        $('#cochera3_1').attr('disabled', 'disabled');
-       $('#cochera1_1').css('color','red');
-        $('#cochera2_1').css('color','red');
-      $('#cochera3_1').css('color','red');
-                        $('#cochera1_2').css('color','green');
-                       $('#cochera2_2').css('color','green');
-                        $('#cochera3_2').css('color','green');
-                        $('#cochera1_3').css('color','green');
-                        $('#cochera2_3').css('color','green');
-                        $('#cochera3_3').css('color','green');
-
-          $.ajax({
-					url: 'partes/nexo.php',					
-					type: 'POST',
-					data: {operacion:"ValidarCochera"},                    
-					async: true,
-                    dataType: 'JSON',
-                   success: function (dataRespuesta){                   
-                    for(var i=0;i<dataRespuesta.length;i++){
-
-                        
-                          var id = dataRespuesta[i]["id"];
-                          $('#cochera'+id+'').attr('disabled', 'disabled');
-                          $('#cochera'+id+'').css('color','red');
-                    }                
-                   }
-                     
-
+           });
              
-            
+      });
 
-       });
+        $("#sacarbtn").click(function() {
+        
+          
+           
+             $.ajax({
+             url:'partes/nexo.php',
+             type:'POST',
+             data:{operacion:"borrar",patente: $(this).val()},
+             async: true,
+             beforeSend: function () {
+                     $("#respuesta").html("<center><img src='imagenes/spinner.gif'></center>"); 
+             },
+             success: function (dataRespuesta){
+               
+                  $("#respuesta").html(dataRespuesta);
+            }
+             
+           });
+           
 
-       });
+       }); 
 
+//____________________END FORM SALIDA_______________________
 
 
 });

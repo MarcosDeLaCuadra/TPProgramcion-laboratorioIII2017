@@ -43,8 +43,8 @@
                                   <span class="glyphicon glyphicon-road"></span> <b style= "color:black">Ingresa vehiculo</b> 
                          </button>
                       
-                         <button type="button" class="btn btn-info btn-sm" id="salebtn">
-                                 <span class="glyphicon glyphicon-road"></span> <b style= "color:black">Sale vehiculo</b>
+                         <button type="button" class="btn btn-info btn-sm" id="buscarbtn">
+                                 <span class="glyphicon glyphicon-road"></span> <b style= "color:black">Buscar vehiculo</b>
                          </button>
                     
                          </div>';
@@ -57,6 +57,40 @@
         else {
              header('location: login.php'); 
         }
+
+     }
+
+     function validarPatenteRepetida($patente){
+         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+	     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT patente FROM  cocheras WHERE patente = '$patente'");
+	     $resultado = $consulta->execute();
+         $cantidad = $consulta->rowCount();         
+         if($cantidad >  0 ){
+                return true;
+         }else{
+             return false;
+         }
+     }
+
+     function estaOcupadaCochera($numCochera){
+         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+	     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM  cocheras WHERE numCochera = '$numCochera'");
+	     $resultado = $consulta->execute();
+         $cantidad = $consulta->rowCount(); 
+         if($cantidad >  0 ){
+                return true;
+         }else{
+             return false;
+         }   
+     }
+
+     function validarDiscapacitado($esDisca,$numCochera){
+
+         if(($numCochera == "1_1" || $numCochera == "2_1" || $numCochera == "3_1") && $esDisca == "no") {
+             return true;
+         }else{
+            return false;
+         }
 
      }
 
