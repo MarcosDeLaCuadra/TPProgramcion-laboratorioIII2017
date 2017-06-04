@@ -1,3 +1,4 @@
+
 <?php
 
      function mostrarBotones($rol,$username){
@@ -23,6 +24,7 @@
                          <button type="button" class="btn btn-info btn-sm" id="autosbtn">
                                 <span class="glyphicon glyphicon-paperclip"></span> <b style= "color:black">Detalle de autos estacionados</b>
                          </button></div> 
+                         
                       ';
             
             echo $botones;
@@ -93,5 +95,64 @@
          }
 
      }
+
+     function calcularImporte($hsIngreso,$fechaIngreso,$hsSalida,$fechaSalida){
+        
+       $diaIngresoArray = explode('/',$fechaIngreso);
+       $diaIngreso = $diaIngresoArray[0];
+       $diaSalidaArray = explode('/',$fechaSalida);
+       $diaSalida = $diaSalidaArray[0];
+
+       $hsIngresoArray = explode(':',$hsIngreso);
+       $hsIng = $hsIngresoArray[0];
+       $hsSalidaArray = explode(':',$hsSalida);
+       $hsSal = $hsSalidaArray[0];
+    
+     /* if($diaIngreso == $diaSalida){
+            $importe = $hsSal - $hsIng;
+            return $importe; 
+      }
+
+     $totaldias =   $diaSalida - $diaIngreso ;
+     $calcularIngreso=  24 - $hsIng;
+
+     if($totaldias == 1)
+     {
+        $calcularEgreso = $hsSalida;
+        $totalImporte = $calcularIngreso + $calcularEgreso;
+        return $totalImporte;
+     }
+     if($totaldias > 1)
+     {
+        $calcularEgreso= (($totaldias - 1 )* 24 ) + $hsSalida;
+        $totalImporte = $calcularIngreso + $calcularEgreso;
+        return $totalImporte; 
+
+     }*/
+
+     $totalHs = $hsSal - $hsIng; 
+     $importe = 0;
+     if($totalHs > 0 && $totalHs < 12) 
+     {
+           $importe = $totalHs * 10 ; 
+            return $importe;
+     }
+     if($totalHs >= 12 && $totalHs < 24){
+          $importe = 90;
+          return $importe;
+     }
+
+     if($totalHs == 24){
+
+          $importe= 170;
+          return $improte;
+     }
+     if($totalHs == 0){
+         return $importe;
+     }
+    
+         
+      
+}
 
 ?>

@@ -1,10 +1,4 @@
-<head>
-<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="crossorigin="anonymous"></script>
-<script src="js/panel.js"></script>
-</head>
-<body>
-</body>
-</html>
+
 <?php
 
 include_once 'AccesoDatos.php';
@@ -120,7 +114,7 @@ public static function buscarVehiculo($patente){
               echo "<td>".$row['numCochera']."</td>";
               echo "<td>".$row['hsingreso']." - ".$row['fechaingreso']."</td>";
               echo "<td>".$row['empingreso']."</td>"; 
-              echo "<td><button id='sacarbtn'".$valor." class='btn btn-danger btn-sm'>Sacar de cochera
+              echo "<td><button id='sacarbtn'".$valor." class='btn btn-danger btn-sm botonbaja'>Sacar de cochera  
                       <span class='glyphicon glyphicon-arrow-down'></span></button></td>";      
               echo "<td><button id='modificarbtn'".$valor." class='btn btn-warning btn-sm'>Modificar
                      <span class='glyphicon glyphicon-cog'></span></button></td>";
@@ -145,7 +139,7 @@ public static function buscarVehiculo($patente){
 //BAJA
 public static function retirarVehiculo($patente){
    
-    //Estacionamiento::addOperaciones($patente);
+    Estacionamiento::addOperaciones($patente);
 
     $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 	$consulta = $objetoAccesoDato->RetornarConsulta("DELETE FROM  cocheras WHERE patente = '$patente'");
@@ -171,23 +165,31 @@ public static function verCocherasOcupadas(){
         echo "</center>";
         $consulta=null;
     }
-/*
+
 public static function addOperaciones($patente){
     session_start();
     $hsSalida = date("H:i");
+    
+    $fechaSalida = getdate();
+    $fechaSalida = $fechaSalida['mday']."/".$fechaSalida['mon']."/".$fechaSalida['year']; 
+
     $empleado = $_SESSION['usuario'];
     $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM cocheras WHERE patente = '$patente'"); 
     $resultado = $consulta->execute(); 
+   
+    $importe = 0;
     while ($row = $consulta->fetch()) {
-       $consulta = $objetoAccesoDato->RetornarConsulta("INSERT into operaciones (numCochera,esDisca,ocupada,marca,patente,color,hsingreso,fechaingreso,empingreso, hssalida, empsalida)values('".$row['numCochera']."','". $row['esDisca'] ."','".$row['ocupada']."','". $row['marca'] ."','". $row['patente'] ."','". $row['color']  ."', '".$row['hsingreso']."', '".$row['fechaingreso']."' ,'".$row['empingreso']."','$hsSalida','$empleado')"); 
-		                                                                                                                                                                                                                                                                                                                           
-	       
+       $importe = calcularImporte($row['hsingreso'],$row['fechaingreso'],$hsSalida,$fechaSalida);
+       $consulta = $objetoAccesoDato->RetornarConsulta("INSERT into operaciones (numCochera,esDisca,ocupada,marca,patente,color,hsingreso,fechaingreso,empingreso, hssalida, empsalida,fechasalida,importe)values('".$row['numCochera']."','". $row['esDisca'] ."','".$row['ocupada']."','". $row['marca'] ."','". $row['patente'] ."','". $row['color']  ."', '".$row['hsingreso']."', '".$row['fechaingreso']."' ,'".$row['empingreso']."','$hsSalida','$empleado','$fechaSalida','$importe')"); 		                                                                                                                                                                                                                                                                                                                           
+        $resultado = $consulta->execute();
+        echo "<center><b class = 'bg-success'>El importe es de : ".$importe." $</b></center>";
+
     }
-
-
+            
+   
 }
-*/
+
 
 }
 

@@ -1,12 +1,15 @@
 $(document).ready(function() {
-
+   
+   //alert("se cargo el documento");
     $('body').css('background', '#CEE3F6');
+   
 
 
 //____________BOTONES MENU___________________
 
        $("#ingresabtn").click(function() {
-     
+               
+           /*
           $.ajax({ 
             url:'partes/formIngreso.php',  
             type:'POST',
@@ -18,13 +21,18 @@ $(document).ready(function() {
                 $("#contenido").html(dataRespuesta);          
              }
 
-        });        
+        });    
+        */
+        $("#contenido").remove();
+        $('body').append('<div id="contenido"></div>'); 
+        $("#contenido").load('partes/formIngreso.php');
+           
           
     });
 
     
         $("#buscarbtn").click(function() {
-            
+          /* 
          $.ajax({
              url:'partes/formSalida.php',
              type:'POST',
@@ -37,7 +45,10 @@ $(document).ready(function() {
             }
              
            });
-
+        */
+        $("#contenido").remove();
+        $('body').append('<div id="contenido"></div>'); 
+        $("#contenido").load('partes/formSalida.php');
         });
 
 
@@ -60,7 +71,7 @@ $(document).ready(function() {
              $("#respuesta").empty();
 
        }); 
-
+      // $("#contenido").on("click",".botonguardar", function(){ 
        $("#guardarbtn").click(function() {
             
             
@@ -145,7 +156,7 @@ $(document).ready(function() {
            });
              
       });
-
+      /*
         $("#sacarbtn").click(function() {
         
           
@@ -167,7 +178,27 @@ $(document).ready(function() {
            
 
        }); 
+        */
 
+$("#respuesta").on("click",".botonbaja", function(){ 
+   
+     $.ajax({
+             url:'partes/nexo.php',
+             type:'POST',
+             data:{operacion:"borrar",patente: $(this).val()},
+             async: true,
+             beforeSend: function () {
+                     $("#respuesta").html("<center><img src='imagenes/spinner.gif'></center>"); 
+             },
+             success: function (dataRespuesta){
+               
+                  $("#respuesta").html(dataRespuesta);
+            }
+             
+           });
+
+ });
+ 
 //____________________END FORM SALIDA_______________________
 
 

@@ -36,5 +36,5 @@
 </body>
 </html>
 <?php
-sleep(2);
+//sleep(2);
 ?>
