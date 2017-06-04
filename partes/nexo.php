@@ -21,7 +21,8 @@ switch($operacion){
     }else{
       $objVehiculo = new Vehiculo ($_POST['patente'],$_POST['marca'],$_POST['color'],$_POST['optradio']);
       $objEstacionamiento = new Estacionamiento($_POST['cochera'], $objVehiculo);
-      $objEstacionamiento->IngresarVehiculo();
+      $msj = $objEstacionamiento->IngresarVehiculo();
+      echo $msj;
     }
      break;
 
@@ -30,17 +31,20 @@ switch($operacion){
      if(empty($patente)){
         echo "<center><p class='bg-danger'><b>Faltan completar datos</b></p></center>";
      }else{
-        Estacionamiento::buscarVehiculo($patente);
+       $msj = Estacionamiento::buscarVehiculo($patente);
+       echo $msj;
      }
      break;
 
      case "borrar":
       $patente = $_POST['patente'];
-      Estacionamiento::retirarVehiculo($patente);
+     $msj= Estacionamiento::retirarVehiculo($patente);
+     echo $msj;
      break;
 
      case "verCocherasOcupadas":
-     Estacionamiento::verCocherasOcupadas();
+     $msj = Estacionamiento::verCocherasOcupadas();
+     echo $msj;
      break;
 
 }

@@ -1,7 +1,5 @@
-
 <?php
-
-     function mostrarBotones($rol,$username){
+function mostrarBotones($rol,$username){
 
         if($rol == 'admin'){
 
@@ -154,5 +152,16 @@
          
       
 }
+    function ValidarStatus($usuario){
 
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta = $objetoAccesoDato->RetornarConsulta(" SELECT * FROM empleados WHERE usuario = '$usuario' ");
+        $resultado = $consulta->execute();
+        $cantidad = $consulta->rowCount();
+
+        if($cantidad > 0){
+            return true;
+        }
+    return false;
+    }
 ?>
