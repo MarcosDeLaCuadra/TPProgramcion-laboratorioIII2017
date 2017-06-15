@@ -9,23 +9,27 @@ include_once 'funciones.php';
 
 $app = new \Slim\App;
 $app->post('/ingresar/{patente}/{marca}/{color}/{esdisca}/{numcochera}', function (Request $request, Response $response) {
-//session_start();
-//$response = "Usuario no registrado";
 
- //if(ValidarStatus($_SESSION['usuario'] )) {
-
+  
    $patente= $request->getAttribute('patente');
    $marca = $request->getAttribute('marca');
    $color = $request->getAttribute('color');
    $esdisca = $request->getAttribute('esdisca');
    $numcochera = $request->getAttribute('numcochera');
+/*
+   if(empty($patente)||empty($marca)||empty($color)||empty($esdisca)||empty($numcochera)) {
+       $json = array("msj"=>"faltan completar datos");
+       $response->getBody()->write(json_encode($json));
+       return $response;
+   }
+  */
 
     $objVehiculo = new Vehiculo ($patente,$marca,$color,$esdisca);
     $objEstacionamiento = new Estacionamiento($numcochera, $objVehiculo);
-    $msj = $objEstacionamiento->IngresarVehiculo();
-   // $response->getBody()->write(Estacionamiento::verCocherasOcupadas());
-    $response->getBody()->write($msj);
-//}
+    $json = $objEstacionamiento->IngresarVehiculo();
+    
+    $response->getBody()->write($json);
+
     return $response;
 });
 
@@ -35,29 +39,39 @@ $app->delete('/borrar/{patente}', function (Request $request, Response $response
 
    $patente= $request->getAttribute('patente');
 
-    $msj = Estacionamiento::retirarVehiculo($patente);
+    $json = Estacionamiento::retirarVehiculo($patente);
     
-    $response->getBody()->write($msj);
+    $response->getBody()->write($json);
 
     return $response;
 });
 
-$app->get('/mostrar', function (Request $request, Response $response) {
+$app->get('/mostrarocupadas', function (Request $request, Response $response) {
 
-    $msj = Estacionamiento::verCocherasOcupadas();
-    
-    $response->getBody()->write($msj);
+    $msj = Estacionamiento::verCocherasOcupadas(); 
+    /*
+    $texto = strip_tags($msj);
+    $arrayTxt = split(",",$texto);
+    $json_array = array();
 
+    for($i=0;$i<count($arrayTxt);$i++){
+      array_push($json_array,array("msj"=>$arrayTxt[$i]));
+    }
+     
+    $response->getBody()->write(json_encode($json_array));
+    */
+ 
+     $response->getBody()->write($msj);
     return $response;
 });
 
-$app->get('/mostrar/{patente}', function (Request $request, Response $response) {
+$app->get('/buscarvehiculo/{patente}', function (Request $request, Response $response) {
 
     $patente= $request->getAttribute('patente');
     
-    $msj = Estacionamiento::buscarVehiculo($patente);
+    $json = Estacionamiento::buscarVehiculo($patente);
     
-    $response->getBody()->write($msj);
+    $response->getBody()->write($json);
 
     return $response;
 });

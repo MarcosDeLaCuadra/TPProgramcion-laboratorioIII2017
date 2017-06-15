@@ -1,4 +1,5 @@
 <?php
+include_once "Clases/AccesoDatos.php";
 function mostrarBotones($rol,$username){
 
         if($rol == 'admin'){
@@ -164,4 +165,44 @@ function mostrarBotones($rol,$username){
         }
     return false;
     }
+
+
+    function Update ($oldpatente,$newpatente,$marca,$color,$esDisca){
+
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta = $objetoAccesoDato->RetornarConsulta(" UPDATE cocheras SET patente = '$newpatente', marca = '$marca',color = '$color', esDisca = '$esDisca' WHERE patente = '$oldpatente' ");
+        $resultado = $consulta->execute();
+        $cantidad = $consulta->rowCount();
+       // meter en tabla operaciones una columna + que diga si es modificacion, alta, baja etc y cambios etc
+
+    }
+
+    function traerPatentes(){
+
+     $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+	 $consulta = $objetoAccesoDato->RetornarConsulta("SELECT patente,id FROM  cocheras");
+	 $resultado = $consulta->execute();
+     $patentes = $consulta->fetchAll();
+	 
+     return $patentes; 
+
+    }
+
+    function buscarPorPatente($patente){
+     $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+	 $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM  cocheras WHERE patente = '$patente'");
+	 $resultado = $consulta->execute();
+     $cantidad = $consulta->rowCount();
+     if($cantidad > 0){
+
+         $json_array = array(); 
+         while ($row = $consulta->fetch()) {
+
+             array_push($json_array,array("patente"=>$row['patente'],"marca"=>$row['marca'],"color"=>$row['color'],"esDisca"=>$row['esDisca'],"id"=>$row["id"],"numcochera"=>$row['numCochera']));
+             
+         }
+         return  $json_array;
+     }
+   }
+
 ?>

@@ -43,20 +43,28 @@ public function getHsEntradaVehiculo(){
 public function IngresarVehiculo(){
 
     $validacion = 0;
-    $resul ='';
+    $json = array();
+    /*
+      if(empty($this->_color)){
+          array_push($json,array("msj" => "color vacio")); terminar validacion datos vacios por api
+      }
+      */
       if(estaOcupadaCochera($this->_numCochera)){
-          $resul =  "<center><p class='bg-danger'><b>Esta cochera ya esta ocupada</b></p></center>" ;
+          echo "<center><p class='bg-danger'><b>Esta cochera ya esta ocupada</b></p></center>" ;
           $validacion=1;
+          array_push($json,array("msj" => "Esta cochera ya esta ocupada"));
       }
 
       if(validarDiscapacitado($this->_objVehiculo->getDiscapacitado(),$this->_numCochera)){
-          $resul .= "<center><p class='bg-danger'><b>Esta cochera esta reservada para discapacitados</b></p></center>";
+          echo "<center><p class='bg-danger'><b>Esta cochera esta reservada para discapacitados</b></p></center>";
           $validacion=1;
+          array_push($json, array("msj" => "Esta cochera esta reservada para discapacitados"));
       }
          
       if(validarPatenteRepetida($this->_objVehiculo->getPatente())){
-          $resul .= "<center><p class='bg-danger'><b>Patente repetida</b></p></center>";
+          echo "<center><p class='bg-danger'><b>Patente repetida</b></p></center>";
           $validacion=1;
+          array_push($json,array("msj" => "Patente repetida"));
       }
 
      if($validacion == 0){
@@ -74,104 +82,144 @@ public function IngresarVehiculo(){
              
               if($resultado){
                      
-                    $resul .= "<center><p class='bg-success'><b>Se ingreso correctamente el vehiculo</b></p></center>";           
-                    
+                    echo "<center><p class='bg-success'><b>Se ingreso correctamente el vehiculo</b></p></center>";           
+                    array_push($json,array("msj" => "Se ingreso correctamente el vehiculo"));
               }
      }
 
-     return $resul;
+     return json_encode($json);
          
 }
 
+
+
+
+
 //MOSTRAR
+
 public static function buscarVehiculo($patente){
      sleep(1);
      $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 	 $consulta = $objetoAccesoDato->RetornarConsulta("SELECT * FROM  cocheras WHERE patente = '$patente'");
 	 $resultado = $consulta->execute();
      $cantidad = $consulta->rowCount();
-     $msj = "";
+     $datos = array();
      if($cantidad > 0){
 
-        $msj .= "<center>";
-        $msj .= "<table class='table'  style=' background-color: beige;'>";
-	        $msj .= "<thead>";
-		        $msj .= "<tr>";
-			      $msj .=  "<th>Patente</th><th>Marca</th><th>Color</th><th>Discapacitado</th><th>Cochera</th><th>Fecha/Hora entrada</th><th>ing. Empelado</th><th>Sacar de cochera</th><th>Modificar</th>";
-		        $msj .= "</tr>";
-	        $msj .= "</thead>";
-	        $msj .= "<tbody>";
+        echo  "<center>";
+        echo  "<table class='table'  style=' background-color: beige;'>";
+	        echo  "<thead>";
+		        echo  "<tr>";
+			      echo   "<th>Patente</th><th>Marca</th><th>Color</th><th>Discapacitado</th><th>Cochera</th><th>Fecha/Hora entrada</th><th>ing. Empelado</th><th>Sacar de cochera</th><th>Modificar</th><th>Mover Vehiculo</th>";
+		        echo  "</tr>";
+	        echo  "</thead>";
+	        echo  "<tbody>";
             while ($row = $consulta->fetch())  
 	       {
              $valor = "value=".$row['patente'];
               
-              $msj .= "<tr>";
-		      $msj .=  "<td>".$row['patente']."</td>";
-              $msj .=  "<td>".$row['marca']."</td>";
-              $msj .=  "<td>".$row['color']."</td>";
-              $msj .=  "<td>".$row['esDisca']."</td>";
-              $msj .=  "<td>".$row['numCochera']."</td>";
-              $msj .=  "<td>".$row['hsingreso']." - ".$row['fechaingreso']."</td>";
-              $msj .=  "<td>".$row['empingreso']."</td>"; 
-              $msj .=  "<td><button id='sacarbtn'".$valor." class='btn btn-danger btn-sm botonbaja'>Sacar de cochera  
+              echo  "<tr>";
+		      echo  "<td>".$row['patente']."</td>";
+              echo  "<td>".$row['marca']."</td>";
+              echo  "<td>".$row['color']."</td>";
+              echo  "<td>".$row['esDisca']."</td>";
+              echo   "<td>".$row['numCochera']."</td>";
+              echo   "<td>".$row['hsingreso']." - ".$row['fechaingreso']."</td>";
+              echo   "<td>".$row['empingreso']."</td>"; 
+              echo   "<td><button id='sacarbtn'".$valor." class='btn btn-danger btn-sm botonbaja'>Sacar de cochera  
                       <span class='glyphicon glyphicon-arrow-down'></span></button></td>";      
-              $msj .=  "<td><button id='modificarbtn'".$valor." class='btn btn-warning btn-sm'>Modificar
-                     <span class='glyphicon glyphicon-cog'></span></button></td>";
-              $msj .= "</tr>";
-
+              echo  "<td><button id='modificarbtn'".$valor." class='btn btn-warning btn-sm botonmodif'>Modificar
+                      <span class='glyphicon glyphicon-cog'></span></button></td>";
+              echo  "<td><button id='moverbtn'".$valor." class='btn btn-warning btn-sm botonmover'>Mover Vehiculo
+                      <span class='glyphicon glyphicon-resize-full'></span></button></td>";
+              echo  "</tr>";
+              array_push($datos,array("patente" => $row['patente'],"marca" => $row['marca'],"color" => $row['color'],"discapacitado" => $row['esDisca'],"numcochera" => $row['numCochera']));
            } 
-             $msj .=  "</tbody>";
-             $msj .=  "</table>";
-             $msj .=  "</center>";
-             $msj .=  "</body>";
-             $msj .=  "</html>";
+             echo   "</tbody>";
+             echo   "</table>";
+             echo   "</center>";
+             echo   "</body>";
+             echo   "</html>";
              $consulta=null;
+             
         
      }else{
-        $msj .=  "<center><p class='bg-danger'><b>No se encontro la patente del vehiculo</b></p></center>";
+        echo   "<center><p class='bg-danger'><b>No se encontro la patente del vehiculo</b></p></center>";
+        array_push($datos,array("patente" => "no existe"));
      }
 
-     return $msj;
-}
+     return json_encode($datos);
+     }
+
+
+
+
 
 
 
 //BAJA
 public static function retirarVehiculo($patente){
-    $msj = "";
-    $msj = Estacionamiento::addOperaciones($patente);
-   
+    $json = array();
+    $json["msj"] = Estacionamiento::addOperaciones($patente);
+    echo "<center><b class = 'bg-success'>". $json["msj"] ."</b></center>";
+
+    $json["datos"]= json_decode(Estacionamiento::buscarVehiculo($patente));
     $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
 	$consulta = $objetoAccesoDato->RetornarConsulta("DELETE FROM  cocheras WHERE patente = '$patente'");
 	$resultado = $consulta->execute();
     
     if($resultado){
-         $msj .= "<center><b class='bg-success'>El vehiculo se retiro correctamente.<b></center>";
+         echo "<center><b class='bg-success'>El vehiculo se retiro correctamente.<b></center>";
       
     }else{
-         $msj .= "<center><b class='bg-success'>El vehiculo no se retiro correctamente.<b></center>";
+         echo "<center><b class='bg-success'>El vehiculo no se retiro correctamente.<b></center>";
     }
 
-    return $msj;
+    return json_encode($json);
 }
 
+
+
+
+
+
 public static function verCocherasOcupadas(){
+
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
         $consulta = $objetoAccesoDato->RetornarConsulta(" SELECT numCochera,patente FROM cocheras"); 
         $consulta->execute();
         $cantidad = $consulta->rowCount();
-        $msj = "";
-        if($cantidad == 0){ $msj .= "<center><b class = 'bg-danger'> No hay cocheras ocupadas actualmente </b><br></center>";}
-       $msj .=  "<center>";
+
+        $json_array = array(); //add
+
+        if($cantidad == 0){ 
+
+            echo  "<center><b class = 'bg-danger'> No hay cocheras ocupadas actualmente </b><br></center>";
+
+            $msj="No hay cocheras ocupadas actualmente";//add
+            array_push($json_array,array("msj"=>$msj));//add
+            return json_encode($json_array);//add
+        }
+
+
+        echo  "<center>";
         while ($row = $consulta->fetch()) 
 	    {
-		$msj .=  "<b class = 'bg-danger'> Cochera ".$row['numCochera']." ocupada por patente: ".$row['patente']."</b><br>";
-	
+		echo  "<b class = 'bg-danger'> Cochera ".$row['numCochera']." ocupada por patente: ".$row['patente'].",</b><br>";
+        array_push($json_array,array("numcochera"=>$row['numCochera'],"patente"=>$row['patente']));//add    
 	    }
-        $msj .=  "</center>";
+        echo  "</center>";
+         
         $consulta=null;
-        return $msj;
+        
+       return json_encode($json_array);//add
     }
+
+
+
+
+
+
 
 public static function addOperaciones($patente){
     session_start();
@@ -190,12 +238,14 @@ public static function addOperaciones($patente){
        $importe = calcularImporte($row['hsingreso'],$row['fechaingreso'],$hsSalida,$fechaSalida);
        $consulta = $objetoAccesoDato->RetornarConsulta("INSERT into operaciones (numCochera,esDisca,ocupada,marca,patente,color,hsingreso,fechaingreso,empingreso, hssalida, empsalida,fechasalida,importe)values('".$row['numCochera']."','". $row['esDisca'] ."','".$row['ocupada']."','". $row['marca'] ."','". $row['patente'] ."','". $row['color']  ."', '".$row['hsingreso']."', '".$row['fechaingreso']."' ,'".$row['empingreso']."','$hsSalida','$empleado','$fechaSalida','$importe')"); 		                                                                                                                                                                                                                                                                                                                           
         $resultado = $consulta->execute();
-        return "<center><b class = 'bg-success'>El importe es de : ".$importe." $</b></center>";
+        return "El importe es de :  $".$importe;
 
     }
             
    
 }
+
+
 }
 
 

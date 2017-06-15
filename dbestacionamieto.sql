@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 04-06-2017 a las 20:16:20
+-- Tiempo de generación: 15-06-2017 a las 04:53:27
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 5.6.30
 
@@ -27,6 +27,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `cocheras` (
+  `id` int(50) NOT NULL,
   `numCochera` varchar(20) NOT NULL,
   `esDisca` varchar(20) NOT NULL,
   `ocupada` varchar(20) NOT NULL,
@@ -42,8 +43,9 @@ CREATE TABLE `cocheras` (
 -- Volcado de datos para la tabla `cocheras`
 --
 
-INSERT INTO `cocheras` (`numCochera`, `esDisca`, `ocupada`, `marca`, `patente`, `color`, `hsingreso`, `fechaingreso`, `empingreso`) VALUES
-('3_3', 'si', 'si', 'SDF', 'SDF', 'SDF', '19:54', '4/6/2017', 'empleado1');
+INSERT INTO `cocheras` (`id`, `numCochera`, `esDisca`, `ocupada`, `marca`, `patente`, `color`, `hsingreso`, `fechaingreso`, `empingreso`) VALUES
+(13, '1_1', 'si', 'si', 'asd', 'asdasdasdasd', 'asd', '04:02', '15/6/2017', 'empleado1'),
+(14, '1_2', 'si', 'si', 'asd', 'asd', 'asd', '04:02', '15/6/2017', 'empleado1');
 
 -- --------------------------------------------------------
 
@@ -92,19 +94,14 @@ CREATE TABLE `operaciones` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Volcado de datos para la tabla `operaciones`
---
-
-INSERT INTO `operaciones` (`numCochera`, `esDisca`, `ocupada`, `marca`, `patente`, `color`, `hsingreso`, `fechaingreso`, `empingreso`, `hssalida`, `empsalida`, `fechasalida`, `importe`) VALUES
-('2_3', 'no', 'si', 'ASD', 'ASD', 'ASD', '19:53', '4/6/2017', 'empleado1', '19:53', 'empleado1', '5/6/2017', 24),
-('1_3', 'si', 'si', 'SDF', 'ERT', 'SDF', '19:54', '4/6/2017', 'empleado1', '19:54', 'empleado1', '5/6/2017', 24),
-('1_1', 'si', 'si', 'lolo', 'lolo', 'lolo', '20:12', '4/6/2017', 'empleado1', '20:12', 'empleado1', '4/6/2017', 0),
-('2_3', 'no', 'si', 'asd', 'asd', 'asd', '20:13', '4/6/2017', 'empleado1', '17:20', 'empleado1', '4/6/2017', 0),
-('3_2', 'si', 'si', 'z', 'z', 'z', '20:14', '4/6/2017', 'empleado1', '23:50', 'empleado1', '4/6/2017', 30);
-
---
 -- Índices para tablas volcadas
 --
+
+--
+-- Indices de la tabla `cocheras`
+--
+ALTER TABLE `cocheras`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `empleados`
@@ -116,6 +113,11 @@ ALTER TABLE `empleados`
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
+--
+-- AUTO_INCREMENT de la tabla `cocheras`
+--
+ALTER TABLE `cocheras`
+  MODIFY `id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT de la tabla `empleados`
 --
