@@ -1,6 +1,6 @@
 $(document).ready(function() {
    
-   //alert("se cargo el documento");
+ 
     $('body').css('background', '#CEE3F6');
    
 
@@ -93,8 +93,15 @@ $(document).ready(function() {
                              $("#respuesta").html("<center><img src='imagenes/spinner.gif'></center>"); 
                     },
                   success: function (dataRespuesta){
-                    
-                     $("#respuesta").html(dataRespuesta);
+
+                        var obj = JSON.parse(dataRespuesta);
+                        if(obj.msj == "Se ingreso correctamente el vehiculo"){
+
+                                $("#respuesta").html("<center><p class='bg-success'><b>"+obj.msj+"</b></p></center>");
+                        }else{
+
+                                $("#respuesta").html("<center><p class='bg-danger'><b>"+obj.msj+"</b></p></center>");
+                        }
           
                   }
 
@@ -115,8 +122,19 @@ $(document).ready(function() {
                              $("#respuesta").html("<center><img src='imagenes/spinner.gif'></center>"); 
                     },
                   success: function (dataRespuesta){
-                    
-                     $("#respuesta").html(dataRespuesta);
+                
+                    var obj = JSON.parse(dataRespuesta);
+   
+                    var tabla =  "<center>" ;
+                  
+                     for(var i=0; i<obj.length;i++){
+                          
+                     tabla +=   "<b class = 'bg-danger'> Cochera " + obj[i].numcochera + " ocupada por patente: "+ obj[i].patente + ",</b><br>";
+                   
+                     }
+                    tabla  +=   "</center>";
+
+                    $("#respuesta").html(tabla);
           
                   }
 
@@ -192,10 +210,16 @@ $("#respuesta").on("click",".botonbaja", function(){
              },
              success: function (dataRespuesta){
                
-                  $("#respuesta").html(dataRespuesta);
-            }
-             
-           });
+               var obj = JSON.parse(dataRespuesta);
+              
+               if(obj.msj == "Se retiro ok"){
+                  $("#respuesta").html("<center><b class='bg-success'>El vehiculo se retiro correctamente.<br> El importe es de $ "+obj.importe+"<b></center>");
+               }else{   
+                 $("#respuesta").html("<center><b class='bg-danger'>El vehiculo no se retiro correctamente.<b></center>");       
+               }
+            } 
+
+        });
 
  });
 
@@ -282,13 +306,15 @@ $("#respuesta").on("click",".botonbaja", function(){
 
   $("#respuesta").on("click",".btnmover", function(){ 
 
-        var patente = document.getElementById("patente1").placeholder; 
-        var numcochera = document.getElementById("numcochera").placeholder; 
-
+      
+        var oldnumcochera = document.getElementById("numcochera").placeholder; 
+        var newnumcochera = $('#numCochera').val();
+    
+        
          $.ajax({
              url:'partes/nexo.php',
              type:'POST',
-             data:{operacion:"movercochera",patente: patente ,numcochera:numcochera },
+             data:{operacion:"movercochera",oldnumcochera:oldnumcochera,newnumcochera:newnumcochera },
              async: true,
              success: function (dataRespuesta){
                
@@ -297,7 +323,7 @@ $("#respuesta").on("click",".botonbaja", function(){
              
            });
            
-
+    
   });
 
 //____________________END FORM MOVER___________________________

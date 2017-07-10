@@ -22,7 +22,14 @@ function mostrarBotones($rol,$username){
 
                          <button type="button" class="btn btn-info btn-sm" id="autosbtn">
                                 <span class="glyphicon glyphicon-paperclip"></span> <b style= "color:black">Detalle de autos estacionados</b>
+                         </button>
+                          <button type="button" class="btn btn-info btn-sm" id="promediosbtn">
+                                <span class="glyphicon glyphicon-signal"></span> <b style= "color:black">Promedios</b>
+                         </button>
+                         <button type="button" class="btn btn-info btn-sm" id="pdfbtn">
+                                <span class="glyphicon glyphicon-copy"></span> <b style= "color:black">Generar PDF</b>
                          </button></div> 
+                        
                          
                       ';
             
@@ -96,38 +103,50 @@ function mostrarBotones($rol,$username){
      }
 
      function calcularImporte($hsIngreso,$fechaIngreso,$hsSalida,$fechaSalida){
-        
-       $diaIngresoArray = explode('/',$fechaIngreso);
-       $diaIngreso = $diaIngresoArray[0];
-       $diaSalidaArray = explode('/',$fechaSalida);
-       $diaSalida = $diaSalidaArray[0];
+   
+       $diaIngresoArray = explode('-',$fechaIngreso);
+       $diaIngreso =(int) $diaIngresoArray[2];
+       $diaSalidaArray = explode('-',$fechaSalida);
+       $diaSalida =(int) $diaSalidaArray[2];
 
        $hsIngresoArray = explode(':',$hsIngreso);
-       $hsIng = $hsIngresoArray[0];
+       $hsIng = (int)$hsIngresoArray[0];
        $hsSalidaArray = explode(':',$hsSalida);
-       $hsSal = $hsSalidaArray[0];
-    
-     /* if($diaIngreso == $diaSalida){
-            $importe = $hsSal - $hsIng;
-            return $importe; 
+       $hsSal = (int)$hsSalidaArray[0];
+       
+     // hs = 10, media = 90 , completa = 170
+     if($diaIngreso == $diaSalida){
+          $totalhs = $hsSal - $hsIng;
+          if($totalhs < 0){
+                 $totalhs = $hsIng - $hsSal;
+          }
+          if($totalhs > 0 && $totalhs  <= 11 ){
+                 return $totalhs * 10;
+          }else if($totalhs >= 12 && $totalhs <= 24 ){
+                 return (($totalhs - 12 )*10)+90;
+          }else if($totalhs == 24){
+                 return 170;
+          }      
       }
 
      $totaldias =   $diaSalida - $diaIngreso ;
      $calcularIngreso=  24 - $hsIng;
 
-     if($totaldias == 1)
+     if($totaldias == 01)
      {
-        $calcularEgreso = $hsSalida;
-        $totalImporte = $calcularIngreso + $calcularEgreso;
+        $calcularEgreso = $hsSal;
+        $cantHoras = $calcularIngreso + $calcularEgreso;
+        $totalImporte = $cantHoras *10;
         return $totalImporte;
      }
-     if($totaldias > 1)
+     if($totaldias > 01)
      {
-        $calcularEgreso= (($totaldias - 1 )* 24 ) + $hsSalida;
+        $calcularEgreso= (($totaldias - 1 )* 24 ) + $hsSal;
         $totalImporte = $calcularIngreso + $calcularEgreso;
+        $totalImporte = $totalImporte *10;
         return $totalImporte; 
 
-     }*/
+     }
 
      $totalHs = $hsSal - $hsIng; 
      $importe = 0;
@@ -148,9 +167,7 @@ function mostrarBotones($rol,$username){
      }
      if($totalHs == 0){
          return $importe;
-     }
-    
-         
+     }       
       
 }
     function ValidarStatus($usuario){
@@ -166,14 +183,13 @@ function mostrarBotones($rol,$username){
     return false;
     }
 
-
     function Update ($oldpatente,$newpatente,$marca,$color,$esDisca){
 
         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
         $consulta = $objetoAccesoDato->RetornarConsulta(" UPDATE cocheras SET patente = '$newpatente', marca = '$marca',color = '$color', esDisca = '$esDisca' WHERE patente = '$oldpatente' ");
         $resultado = $consulta->execute();
         $cantidad = $consulta->rowCount();
-       // meter en tabla operaciones una columna + que diga si es modificacion, alta, baja etc y cambios etc
+        return $cantidad;   
 
     }
 
@@ -205,4 +221,49 @@ function mostrarBotones($rol,$username){
      }
    }
 
+
+        function traerCocherasOcupadas(){
+
+         $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+	     $consulta = $objetoAccesoDato->RetornarConsulta("SELECT numCochera FROM  cocheras");
+	     $resultado = $consulta->execute();
+         $cocheras =  $consulta->fetchAll();
+
+         return $cocheras;
+     }
+
+     function ValidarSelect($cocheras , $piso){
+
+        $PisoDeCochera= explode("_",$piso);
+         for($i=0;$i<count($cocheras);$i++){
+            if($cocheras[$i] == $piso ){
+                 echo '<option value="'.$cocheras[$i].'" id=".aca valor." >Cochera '.$PisoDeCochera[1] .' </option>';
+            }
+         }
+    }
+
+    function updateDeCochera($oldcochera,$newcochera){
+
+        $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+        $consulta = $objetoAccesoDato->RetornarConsulta(" UPDATE cocheras SET numCochera = '$newcochera' WHERE numCochera = '$oldcochera' ");
+        $resultado = $consulta->execute();
+        if($resultado){
+             echo "<center><p class='bg-success'><b>Se movio correctamente el vehiculo de cochera</b></p></center>";
+             return true;
+        }
+
+    }
+
+  function registrarOperacion($usuario,$tipo,$fecha,$numcochera){
+      
+       $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+       $consulta = $objetoAccesoDato->RetornarConsulta("INSERT into registrooperaciones (nombreempleado,tipo,fecha,numcochera)values('$usuario','$tipo','$fecha','$numcochera');"); 		                                                                                                                                                                                                                                                                                                                           
+       $resultado = $consulta->execute();
+       
+  }
+    
+
 ?>
+
+
+

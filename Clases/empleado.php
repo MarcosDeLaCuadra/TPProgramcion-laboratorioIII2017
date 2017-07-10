@@ -1,4 +1,5 @@
 <?php
+include_once 'AccesoDatos.php';
 Class Empelado{
 
     private $_nombre;
@@ -34,19 +35,6 @@ Class Empelado{
     }
     public function setHsSalida($hora){
         $this->_hsSalida=$hora;
-    }
-
-
-    public function ingresarVehiculo(){
-
-    }
-
-    public function retirarVehiculo(){
-
-    }
-
-    public function mostrarVehiculos(){
-        
     }
 
 }

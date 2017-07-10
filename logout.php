@@ -1,11 +1,16 @@
 <?php
+include_once "Clases/AccesoDatos.php";
 session_start(); 
 
- $_SESSION['hrSalida'] = time();
- $id = $_SESSION['id'];
+$hsSalida = date("H:i:s");            
+$fechaSalida = date('Y-m-d'); 
 
- // hacer insert  despues aca y que le pase la hs de salida al id  (agregar hs salida / hs entrada en db)
+$id = $_SESSION['idRegistro'];
 
+$fechaSalidaTest = date('Y-m-d'); 
+$objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+$consulta = $objetoAccesoDato->RetornarConsulta(" UPDATE registroempleados SET fechasal = '$fechaSalida',hssal = '$hsSalida' WHERE id = '$id'");
+$resultado = $consulta->execute();
 session_destroy(); 
   
 header('location: login.php'); 

@@ -7,7 +7,16 @@
     <link rel="shortcut icon" href="imagenes/persona.jpg">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--bootstrap validator -->
+    <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="./bower_components/bootstrapvalidator/dist/css/bootstrapValidator.min.css">
+    <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="./bower_components/bootstrapvalidator/dist/js/bootstrapValidator.min.js"></script>
+    <!--end bootstrap validator -->
     <script src="js/login.js"></script>
+    <script src="js/validator.js"></script>
+    
     <title>Login</title>
 </head>
 <body>
@@ -17,7 +26,7 @@
     <img src="imagenes/persona.jpg" class="img-circle" width="100" height="100">
   </center>
 
-    <form action = "" method="POST" class="form-horizontal">
+    <form action = "" method="POST" class="form-horizontal" id="loginForm" name="loginForm">
 
              <div class="form-group" >
              <br>

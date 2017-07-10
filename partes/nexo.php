@@ -6,25 +6,20 @@ include_once '../Clases/vehiculo.php';
 include_once '../funciones.php';
 
 $operacion = $_POST['operacion'];
-
+session_start();
 switch($operacion){
 
     case "alta":
-
-    session_start();
-
     if(empty($_POST['patente']) || 
        empty($_POST['marca']) ||
        empty($_POST['color']) ||
        $_POST['cochera'] == 0 )     
      {
        echo "<center><p class='bg-danger'><b>Faltan completar datos</b></p></center>";  
-    }else{
+     }else{
       $objVehiculo = new Vehiculo ($_POST['patente'],$_POST['marca'],$_POST['color'],$_POST['optradio']);
       $objEstacionamiento = new Estacionamiento($_POST['cochera'], $objVehiculo);
-      $objEstacionamiento->IngresarVehiculo();
-      
-
+      echo $objEstacionamiento->IngresarVehiculo(); 
     }
      break;
 
@@ -38,17 +33,19 @@ switch($operacion){
      break;
 
      case "borrar":
-      $patente = $_POST['patente'];
-      Estacionamiento::retirarVehiculo($patente);
+         $patente = $_POST['patente'];
+        echo Estacionamiento::retirarVehiculo($patente);
      break;
 
      case "verCocherasOcupadas":
-     Estacionamiento::verCocherasOcupadas();   
+        $respuesta = Estacionamiento::verCocherasOcupadas();  
+        echo $respuesta;
      break;
 
      case "modificar":
-    Estacionamiento::modificarVehiculo();
+         Estacionamiento::modificarVehiculo();
      break;
+
      case "actualizar":
      $patente = $_POST['patente'];
      $marca = $_POST['marca'];
@@ -62,8 +59,7 @@ switch($operacion){
        echo "<center><p class='bg-danger'><b>Faltan completar datos</b></p></center>";
        break;
      }
-   
-     $patentes = traerPatentes(); // trae todas las patentes y todos los id de esas patentes
+     $patentes = traerPatentes(); 
      $flag= 0;
     
      for($i=0;$i<count($patentes);$i++){
@@ -82,15 +78,26 @@ switch($operacion){
      if($flag == 1){
        echo "<center><p class='bg-danger'><b>Error la patente ya existe</b></p></center>";
      }else{   
-       update($oldpatente,$patente,$marca,$color,$esDisca);
+       $cantidad= update($oldpatente,$patente,$marca,$color,$esDisca);
+       if($cantidad>0){
+         
+         registrarOperacion($_SESSION['usuario'],'modificar',date('Y-m-d'),$numCochera);
        echo "<center><p class='bg-success'><b>Se actualizo correctamente el vehiculo</b></p></center>";
+       }
+      
      }
         
      break;
 
      case "movercochera":
-     echo  $_POST['patente']."<br>";
-      echo  $_POST['numcochera'];
+    
+     $oldcochera = $_POST['oldnumcochera'];
+     $newcochera = $_POST['newnumcochera'];
+     $retorno = updateDeCochera($oldcochera,$newcochera);
+     if($retorno){
+       registrarOperacion($_SESSION['usuario'],'mover',date('Y-m-d'),$newcochera);
+     }
+
      break;
 
 }

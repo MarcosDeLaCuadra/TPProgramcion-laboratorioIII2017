@@ -3,11 +3,7 @@
   include_once"../funciones.php";
 
   $patente = $_POST['patente'];
-
-  
-$datos=buscarPorPatente($patente);
-
-
+  $datos=buscarPorPatente($patente);
   ?>
   
   <div class="container" >
@@ -29,8 +25,8 @@ $datos=buscarPorPatente($patente);
                 <div class="panel-body">
 
                                          <div class="form-group">
-                                            <label for="nombre">Id:</label>
-                                            <input class="form-control"type="text" id="id1" name="id1" placeholder=<?php  echo $datos[0]['id'];?> disabled> 
+                                           <!-- <label for="nombre">Id:</label> -->
+                                            <input class="form-control"type="hidden" id="id1" name="id1" placeholder=<?php  echo $datos[0]['id'];?> disabled> 
                                         </div>
                                          <div class="form-group">
                                             <label for="nombre">Numero de cochera:</label>
@@ -68,16 +64,6 @@ $datos=buscarPorPatente($patente);
                                           ?>
                                         </div>
                                       
-                                    <!--
-                                    <div class="form-group">
-                                            <label for="nombre">Foto:</label>
-                                            
-                                            <input class="form-control"type="file" name="foto" id="foto" placeholder="aca va su foto" >
-                                        
-                                        <img id="blah" src="#" alt="your image" />
-                                
-                                        </div>
-                                -->
 
                                     <br>
                                 

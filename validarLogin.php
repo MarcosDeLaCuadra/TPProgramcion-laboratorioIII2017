@@ -18,9 +18,9 @@ $cantidad = $consulta->rowCount();
  $rol =	$row['rol'];
  $turno = $row['turno'];
  $id= $row['id'];
-	
+ $suspendido = $row['suspendido'];	
 
- if($cantidad == 1){
+ if($cantidad == 1 && $suspendido == 'no'){
      
      
         if($cookies == "true"){             
@@ -38,6 +38,24 @@ $cantidad = $consulta->rowCount();
     $_SESSION['turno'] = $turno;
     $_SESSION['id']= $id;
     $error = 'true';
+
+    if($rol != 'admin'){
+    
+    $hsIngreso = date("H:i:s");              
+    $fechaIngreso =  date('Y-m-d');        
+
+    $objetoAccesoDato = AccesoDatos::dameUnObjetoAcceso(); 
+    $consulta = $objetoAccesoDato->RetornarConsulta("INSERT into registroempleados (nombre,fechaing,hsing)values('$usuario','$fechaIngreso','$hsIngreso')");
+    $resultado = $consulta->execute();
+
+    
+    $consulta = $objetoAccesoDato->RetornarConsulta(" SELECT id FROM registroempleados WHERE fechaing = '$fechaIngreso' AND hsing = '$hsIngreso' ");
+    $resultado = $consulta->execute();
+    $id = $consulta->fetch();
+    $_SESSION['idRegistro']= $id["id"];
+
+   
+     }
       
  }
  if($error == 'false'){
